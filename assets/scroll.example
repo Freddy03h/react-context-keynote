@@ -1,0 +1,77 @@
+// Context
+
+export const ScrollContext = React.createContext({
+  scrollTo: (coord) => {}
+});
+
+// Component with Provider
+
+function Scroll({
+  children,
+  style
+}) {
+  const scrollRef = React.useRef(null);
+  const scrollEl = scrollRef.current;
+
+  const scrollTo = React.useCallback(
+    (coord) => {
+      if (scrollEl) {
+        if (scrollEl.scrollTo) {
+          scrollEl.scrollTo(coord, 0);
+        } else {
+          scrollEl.scrollTop = coord;
+        }
+      }
+    },
+    [scrollEl]
+  );
+
+  return (
+    <ScrollContext.Provider value={{ scrollTo }}>
+      <div ref={scrollRef} css={[styles.scroll, style]}>
+        {children}
+      </div>
+    </ScrollContext.Provider>
+  );
+}
+
+const styles = {
+  scroll: css({
+    overflowY: "auto",
+    WebkitOverflowScrolling: "touch",
+  })
+};
+
+export default Scroll;
+
+// Hooks
+
+const useScrollContext =
+  () => React.useContext(ScrollContext);
+
+export const useScrollTo = () => {
+  const { scrollTo } = useScrollContext();
+  return scrollTo;
+};
+
+// Usage in component
+
+function Page() {
+  return (
+    <Scroll>
+      <MyComponent />
+    </Scroll>
+  );
+}
+
+function MyComponent() {
+  const scrollTo = useScrollTo();
+
+  return (
+    <div
+      onClick={() => scrollTo()}
+    >
+      …
+    </div>
+  )
+}

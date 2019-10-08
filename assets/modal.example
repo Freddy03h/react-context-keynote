@@ -1,0 +1,93 @@
+// Context
+
+export const ModalContext = React.createContext({
+  container: null
+});
+
+// Provider
+
+function ModalProvider({ children }) {
+  const containerRef = React.useRef(null);
+  const container = containerRef.current;
+
+  return (
+    <ModalContext.Provider value={{ container }}>
+      {children}
+      <div ref={containerRef} />
+    </ModalContext.Provider>
+  );
+}
+
+export default ModalProvider;
+
+// Component
+
+export function Modal({
+  children,
+  isOpen,
+  onRequestClose
+}) {
+  const { container } = React.useContext(ModalContext);
+
+  const child = (
+    <div css={styles.container}>
+      <div
+        css={styles.overlay}
+        onClick={onRequestClose}
+      />
+      <div css={styles.modal}>{children}</div>
+    </div>
+  );
+
+  return container && isOpen
+    ? ReactDOM.createPortal(child, container)
+    : null;
+}
+
+const styles = {
+  container: css({
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  }),
+  overlay: css({
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0,0,0,0.5)",
+  }),
+  modal: css({
+    position: "relative",
+    margin: "auto",
+  })
+};
+
+// Usage in component
+
+function Root() {
+  return (
+    <Modal>
+      <App />
+    </Modal>
+  );
+}
+
+function Page() {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  return (
+    <div>
+      …
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+      >
+        …
+      </Modal>
+    </div>
+  )
+}

@@ -39,12 +39,13 @@ const style = {
   position: "relative",
   textAlign: "center",
   overflow: "hidden",
-  color: defaultColor,
+  color: "white",
   height: "646px",
   margin: 0,
-  padding: "40% 0",
+  padding: "24% 1% 50%",
   whiteSpace: "pre-wrap",
-  wordBreak: "break-word"
+  wordBreak: "break-word",
+  backgroundColor: "transparent"
 };
 
 class CodeSlide extends React.Component {
@@ -67,7 +68,8 @@ class CodeSlide extends React.Component {
 
   static contextTypes = {
     store: PropTypes.object.isRequired,
-    updateNotes: PropTypes.func
+    updateNotes: PropTypes.func,
+    styles: PropTypes.object
   };
 
   state = {
@@ -214,7 +216,9 @@ class CodeSlide extends React.Component {
           key={index}
           ref={startOrEnd(index, loc)}
           dangerouslySetInnerHTML={{
-            __html: showLineNumbers ? getLineNumber(index) + line : line
+            __html: showLineNumbers
+              ? getLineNumber(index) + (line || " ")
+              : line || " "
           }}
           style={{ opacity: calculateOpacity(index, loc) }}
         />
@@ -222,10 +226,14 @@ class CodeSlide extends React.Component {
     });
 
     return (
-      <Slide ref="slide" bgColor={slideBg} margin={1} {...rest}>
+      <Slide ref="slide" bgColor={slideBg} {...rest}>
         {range.title && <CodeSlideTitle>{range.title}</CodeSlideTitle>}
 
-        <pre ref="container" style={newStyle}>
+        <pre
+          ref="container"
+          style={newStyle}
+          class={this.context.styles.prism.dark}
+        >
           <code style={{ display: "inline-block", textAlign: "left" }}>
             {lines}
           </code>

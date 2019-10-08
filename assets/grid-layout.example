@@ -1,0 +1,86 @@
+// Config
+
+const gridStyle = {
+  maxWidth: 1440,
+  minWidth: 1024,
+  maxTabletWidth: 1280
+}
+
+function findLayoutType(windowWidth) {
+  if (windowWidth < gridStyle.minWidth) {
+    return "mobile";
+  } else if (windowWidth < gridStyle.maxTabletWidth) {
+    return "tablet";
+  } else {
+    return "desktop";
+  }
+}
+
+// Context
+
+export const GridContext = React.createContext(
+  findLayoutType(window.innerWidth)
+);
+
+// Component with Provider
+
+function Grid({ children }) {
+  const [layoutType, setLayoutType] = React.useState(
+    findLayoutType(window.innerWidth)
+  );
+
+  const handleResize = React.useCallback(
+    (event) => {
+      setLayoutType(
+        findLayoutType(event.currentTarget.innerWidth)
+      );
+    },
+    [setLayoutType]
+  );
+
+  React.useEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  });
+
+  return (
+    <GridContext.Provider value={layoutType}>
+      {children}
+    </GridContext.Provider>
+  );
+}
+
+export default Grid;
+
+// Hooks
+
+export const useLayoutType =
+  () => React.useContext(GridContext);
+
+// Usage in component
+
+function Root() {
+  return (
+    <Grid>
+      <App />
+    </Grid>
+  );
+}
+
+function MyComponent() {
+  const layoutType = useLayoutType();
+
+  return (
+    <div
+      css={[
+        style.container,
+        layoutType === "mobile" && style.containerMobile
+      ]}
+    >
+      …
+    </div>
+  )
+}
