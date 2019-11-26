@@ -49,6 +49,7 @@ const theme = createTheme(
   }
 );
 theme.screen.progress.bar.container.height = "5px";
+theme.screen.components.list.listStylePosition = "outside";
 
 const styleSlideContentFullScreen = {
   width: "100%",
@@ -265,6 +266,25 @@ export default class Presentation extends React.Component {
           showLineNumbers={false}
         />
 
+        <Slide bgColor="tertiary" textColor="primary">
+          <Heading size={4} caps textColor="secondary">
+            References
+          </Heading>
+
+          <Text textAlign="left" margin="1em auto 0.25rem">Documentation</Text>
+          <List textColor="primary" margin="0px 0px 1em">
+            <ListItem><Link href="https://reactjs.org/docs/context.html" textColor="primary" target="_blank">React - Context</Link></ListItem>
+            <ListItem><Link href="https://reactjs.org/docs/hooks-reference.html" textColor="primary" target="_blank">React - Hooks</Link></ListItem>
+          </List>
+
+          <Text textAlign="left">Other</Text>
+          <List textColor="primary" margin="0px 0px 1em">
+            <ListItem><Link href="https://codesandbox.io/s/header-system-y8w9i" textColor="primary" target="_blank">Example that nest context providers to create a headers system that manages header tags (h1, h2, ...) on its own</Link></ListItem>
+            <ListItem><Link href="https://twitter.com/zoontek" textColor="primary" target="_blank">For a more production ready example with Modal/Portal, ask @zoontek</Link></ListItem>
+          </List>
+
+        </Slide>
+
         <Slide bgColor="secondary">
           <Heading size={1} caps textColor="tertiary">
             Merci
@@ -291,84 +311,6 @@ export default class Presentation extends React.Component {
           </Heading>
         </Slide>
 
-        {/***************************************** */}
-
-        {/*<Slide bgColor="secondary">
-          <Image src={images.formidagon} width={800} />
-        </Slide> */}
-
-        {/*<Slide bgColor="primary">
-          <Heading size={1} fit caps lineHeight={1} textColor="secondary">
-            Spectacle Boilerplate
-          </Heading>
-          <Text margin="10px 0 0" textColor="tertiary" fit bold>
-            open the presentation/index.js file to get started
-          </Text>
-        </Slide>
-
-        <Slide bgColor="tertiary">
-          <Heading size={6} textColor="primary" caps>
-            Typography
-          </Heading>
-          <Heading size={1} textColor="secondary">
-            Heading 1
-          </Heading>
-          <Heading size={2} textColor="secondary">
-            Heading 2
-          </Heading>
-          <Heading size={3} textColor="secondary">
-            Heading 3
-          </Heading>
-          <Heading size={4} textColor="secondary">
-            Heading 4
-          </Heading>
-          <Heading size={5} textColor="secondary">
-            Heading 5
-          </Heading>
-          <Text size={6} textColor="secondary">
-            Standard text
-          </Text>
-        </Slide>
-
-        <Slide bgColor="primary" textColor="tertiary">
-          <Heading size={6} textColor="secondary" caps>
-            Standard List
-          </Heading>
-          <List>
-            <ListItem bulletStyle="star">Item 1</ListItem>
-            <ListItem bulletStyle="cross">Item 2</ListItem>
-            <ListItem>Item 3</ListItem>
-            <ListItem>Item 4</ListItem>
-          </List>
-        </Slide>
-
-        <Slide bgColor="secondary" textColor="primary">
-          <BlockQuote>
-            <Quote>Example Quote</Quote>
-            <Cite margin="10px 0 0 30px">Author</Cite>
-          </BlockQuote>
-        </Slide>
-
-        <Slide>
-          <Image src={images.goodWork} width={500} />
-          <Notes>gifs work too</Notes>
-        </Slide>*/}
-
-        {/*<Slide bgColor="secondary" contentStyles={styleSlideContentFullScreen}>
-          <CodePane
-            lang="jsx"
-            source={require("raw-loader!../assets/deck.example")}
-            theme="dark"
-          />
-    </Slide>*/}
-
-        {/*<Slide bgColor="secondary" contentStyles={styleSlideContentFullScreen}>
-          <ComponentPlayground
-            theme="dark"
-            code={code}
-            scope={{ NewComponent }}
-          />
-    </Slide>*/}
       </Deck>
     );
   }
