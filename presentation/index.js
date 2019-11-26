@@ -5,6 +5,7 @@ import React from "react";
 import {
   BlockQuote,
   Cite,
+  Link,
   Deck,
   Heading,
   Image,
@@ -27,7 +28,8 @@ import { ScrollExample } from "../src/ScrollContext";
 import { ModalExample } from "../src/ModalContext";
 
 const images = {
-  freddy: require("../assets/freddy.png")
+  freddy: require("../assets/freddy.png"),
+  twitter: require("../assets/twitter.png")
 };
 
 // Require CSS
@@ -259,6 +261,32 @@ export default class Presentation extends React.Component {
           ]}
           showLineNumbers={false}
         />
+
+        <Slide bgColor="secondary">
+          <Heading size={1} caps textColor="tertiary">
+            Merci
+          </Heading>
+          <Heading size={5} caps margin="3em 0 0">
+            <Link href="https://twitter.com/HarrisFreddy" textColor="primary">
+              <img
+                src={images.twitter}
+                style={{
+                  border: "none",
+                  boxShadow: "none",
+                  verticalAlign: "sub",
+                  height: 60,
+                  margin: "0 15px 0 0",
+                  filter:
+                    "invert(100%) sepia(100%) saturate(0%) hue-rotate(92deg) brightness(104%) contrast(101%)"
+                }}
+              />
+              @harrisfreddy
+            </Link>
+          </Heading>
+          <Heading size={6} caps textColor="tertiary" margin="1em 0 0.5em">
+            Freelance React Native & React.js
+          </Heading>
+        </Slide>
 
         {/***************************************** */}
 

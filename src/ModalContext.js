@@ -110,8 +110,8 @@ const Button = () => {
 
 const Screen = () => {
   return (
-    <div>
-      <p>
+    <div style={{ backgroundColor: "white", padding: "1em" }}>
+      <p style={{ marginTop: 0, marginBottom: "1em", textAlign: "left" }}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pulvinar
         justo et quam placerat blandit. Donec quis lacinia mi. Vestibulum
         imperdiet, nisi eu blandit accumsan, orci metus viverra lorem, sit amet
@@ -119,7 +119,7 @@ const Screen = () => {
         pretium arcu et placerat varius.
       </p>
       <Button />
-      <p>
+      <p style={{ marginTop: "1em", marginBottom: 0, textAlign: "left" }}>
         Fusce blandit quam ut ipsum dictum, sit amet vehicula felis lacinia.
         Vestibulum ullamcorper, erat quis tincidunt pretium, quam velit posuere
         enim, non tincidunt justo nunc ut nibh. Vestibulum sit amet porttitor
@@ -136,8 +136,7 @@ const Scroll = () => {
       style={{
         flexGrow: 1,
         border: "solid black 1px",
-        margin: "1px",
-        padding: "5px"
+        margin: "2px"
       }}
     >
       <Screen />
@@ -147,7 +146,14 @@ const Scroll = () => {
 
 export const ModalExample = () => {
   return (
-    <div style={{ height: "60vh", display: "flex" }}>
+    <div
+      style={{
+        height: "60vh",
+        display: "flex",
+        backgroundColor: "#2a2734",
+        padding: "2px"
+      }}
+    >
       <div style={{ position: "relative", display: "flex" }}>
         <ModalProvider>
           <Scroll />
