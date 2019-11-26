@@ -188,17 +188,17 @@ export default class Presentation extends React.Component {
           lang="jsx"
           code={require("raw-loader!../assets/grid-columns.example")}
           ranges={[
-            { loc: [0, 136], title: "Grid Columns" },
+            { loc: [0, 133], title: "Grid Columns" },
             { loc: [3, 5] },
-            { loc: [10, 26] },
-            { loc: [39, 44], note: "Context" },
-            { loc: [51, 54] },
-            { loc: [55, 66] },
-            { loc: [75, 83] },
-            { loc: [84, 89], note: "Provider" },
-            { loc: [95, 101], note: "Hook" },
-            { loc: [102, 109], note: "Hook" },
-            { loc: [120, 135] }
+            { loc: [10, 21] },
+            { loc: [34, 39], note: "Context" },
+            { loc: [46, 49] },
+            { loc: [50, 61] },
+            { loc: [70, 78] },
+            { loc: [79, 84], note: "Provider" },
+            //{ loc: [90, 96], note: "Hook" },
+            { loc: [97, 104], note: "Hook" },
+            { loc: [115, 132] }
           ]}
           showLineNumbers={false}
         />
@@ -252,12 +252,15 @@ export default class Presentation extends React.Component {
           lang="jsx"
           code={require("raw-loader!../assets/modal.example")}
           ranges={[
-            { loc: [0, 94], title: "Modal" },
+            { loc: [0, 100], title: "Modal" },
             { loc: [2, 5], note: "Context" },
             { loc: [8, 19], note: "Provider" },
-            { loc: [24, 45] },
-            { loc: [70, 77] },
-            { loc: [78, 93] }
+            { loc: [23, 28] },
+            { loc: [28, 29] },
+            { loc: [46, 47] },
+            { loc: [30, 45] },
+            { loc: [73, 80] },
+            { loc: [81, 99] }
           ]}
           showLineNumbers={false}
         />

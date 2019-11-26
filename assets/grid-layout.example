@@ -1,13 +1,13 @@
 // Config
 
 const gridStyle = {
-  maxWidth: 1440,
-  minWidth: 1024,
-  maxTabletWidth: 1280
+  maxMobileWidth: 768,
+  maxTabletWidth: 1024,
+  maxWidth: 1440
 }
 
 function findLayoutType(windowWidth) {
-  if (windowWidth < gridStyle.minWidth) {
+  if (windowWidth < gridStyle.maxMobileWidth) {
     return "mobile";
   } else if (windowWidth < gridStyle.maxTabletWidth) {
     return "tablet";

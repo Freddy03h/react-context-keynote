@@ -3,30 +3,25 @@
 const gridStyle = {
   gutterWidth: 16,
   columns: 12,
-  maxWidth: 1440,
-  minWidth: 1024,
-  maxTabletWidth: 1280
+  maxMobileWidth: 768,
+  maxTabletWidth: 1024,
+  maxWidth: 1440
 }
 
 const gutterCount = grid.columns + 1;
 const totalGuttersWidth = gutterCount * grid.gutterWidth;
 
-function clamp(num, min, max) {
-  return Math.min(max, Math.max(min, num));
-}
-
 function findColumnWidth(windowWidth) {
-  const clampedWidth =
-    clamp(windowWidth, grid.minWidth, grid.maxWidth);
+  const clampedWidth = Math.min(windowWidth, grid.maxWidth);
   const availableWidthWithoutGutters =
     clampedWidth - totalGuttersWidth;
   const columnWidth =
     availableWidthWithoutGutters / grid.columns;
-  return Math.floor(columnWidth);
+  return columnWidth;
 }
 
 function findLayoutType(windowWidth) {
-  if (windowWidth < gridStyle.minWidth) {
+  if (windowWidth < gridStyle.maxMobileWidth) {
     return "mobile";
   } else if (windowWidth < gridStyle.maxTabletWidth) {
     return "tablet";
@@ -46,7 +41,7 @@ export const GridContext = React.createContext({
 // Component with Provider
 
 function Grid({ children }) {
-  const [layoutType, setLayoutType] = React.useState(
+  const [layoutType, setLayoutType] = useState(
     findLayoutType(window.innerWidth)
   );
   const [columnWidth, setColumnWidth] = useState(
@@ -65,7 +60,7 @@ function Grid({ children }) {
     [setColumnWidth, setLayoutType]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener("resize", handleResize);
 
     return () => {
@@ -119,14 +114,16 @@ function Root() {
 }
 
 function MyComponent() {
-  const width = useColumnsWidth(2);
   const layoutType = useLayoutType();
+  const widthTablet = useColumnsWidth(8);
+  const widthDesktop = useColumnsWidth(6);
 
   return (
     <div
       css={[
         style.container,
-        layoutType === "desktop" && css({ width })
+        layoutType === "tablet" && css({ widthTablet }),
+        layoutType === "desktop" && css({ widthDesktop })
       ]}
     >
       …

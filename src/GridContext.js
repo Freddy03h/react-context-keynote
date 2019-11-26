@@ -18,9 +18,9 @@ const globalStyles = {
   grid: {
     gutterWidth: 16,
     columns: 12,
-    maxWidth: 1440,
     maxMobileWidth: 768,
-    maxTabletWidth: 1024
+    maxTabletWidth: 1024,
+    maxWidth: 1440
   }
 };
 const { grid } = globalStyles;

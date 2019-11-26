@@ -1,19 +1,18 @@
 // Context
 
 export const ModalContext = React.createContext({
-  container: null
+  setModalElement: element => {}
 });
 
 // Provider
 
 function ModalProvider({ children }) {
-  const containerRef = React.useRef(null);
-  const container = containerRef.current;
+  const [modalElement, setModalElement] = useState(null);
 
   return (
-    <ModalContext.Provider value={{ container }}>
+    <ModalContext.Provider value={{ setModalElement }}>
       {children}
-      <div ref={containerRef} />
+      <div>{modalElement}</div>
     </ModalContext.Provider>
   );
 }
@@ -27,21 +26,25 @@ export function Modal({
   isOpen,
   onRequestClose
 }) {
-  const { container } = React.useContext(ModalContext);
+  const { setModalElement } = useContext(ModalContext);
 
-  const child = (
-    <div css={styles.container}>
-      <div
-        css={styles.overlay}
-        onClick={onRequestClose}
-      />
-      <div css={styles.modal}>{children}</div>
-    </div>
-  );
+  useEffect(() => {
+    const child = (
+      <div css={styles.container}>
+        <div
+          css={styles.overlay}
+          onClick={onRequestClose}
+        />
+        <div css={styles.modal}>{children}</div>
+      </div>
+    );
 
-  return container && isOpen
-    ? ReactDOM.createPortal(child, container)
-    : null;
+    setModalElement(child);
+
+    return () => setModalElement(null);
+  }, [setModalElement, children, isOpen, onRequestClose]);
+
+  return null;
 }
 
 const styles = {
@@ -70,9 +73,9 @@ const styles = {
 
 function Root() {
   return (
-    <Modal>
+    <ModalProvider>
       <App />
-    </Modal>
+    </ModalProvider>
   );
 }
 
@@ -81,12 +84,15 @@ function Page() {
 
   return (
     <div>
-      …
+      <p>Lorem ipsum dolor sit amet</p>
+      <button onClick={() => setModalIsOpen(true)}>Confirm</button>
+
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
       >
-        …
+        <div>Info</div>
+        <button onClick={() => setModalIsOpen(false)}>Ok</button>
       </Modal>
     </div>
   )

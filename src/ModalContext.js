@@ -1,21 +1,21 @@
-import React, { useState, useContext, createContext } from "react";
+import React, { useState, useEffect, useContext, createContext } from "react";
 import ScrollProvider from "./ScrollContext";
 
 // Context
 
 export const ModalContext = createContext({
-  setModalView: view => {}
+  setModalElement: element => {}
 });
 
 // Provider
 
 function ModalProvider({ children }) {
-  const [modalView, setModalView] = useState(null);
+  const [modalElement, setModalElement] = useState(null);
 
   return (
-    <ModalContext.Provider value={{ setModalView }}>
+    <ModalContext.Provider value={{ setModalElement }}>
       {children}
-      <div>{modalView}</div>
+      <div>{modalElement}</div>
     </ModalContext.Provider>
   );
 }
@@ -25,9 +25,9 @@ export default ModalProvider;
 // Component
 
 export function Modal({ children, isOpen, onRequestClose }) {
-  const { setModalView } = useContext(ModalContext);
+  const { setModalElement } = useContext(ModalContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const child = (
       <div style={{ ...styles.container, ...(isOpen && styles.containerOpen) }}>
         <div
@@ -40,10 +40,10 @@ export function Modal({ children, isOpen, onRequestClose }) {
       </div>
     );
 
-    setModalView(child);
+    setModalElement(child);
 
-    return () => setModalView(null);
-  }, [setModalView, children, isOpen]);
+    return () => setModalElement(null);
+  }, [setModalElement, children, isOpen, onRequestClose]);
 
   return null;
 }

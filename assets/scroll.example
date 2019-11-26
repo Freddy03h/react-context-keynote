@@ -10,10 +10,10 @@ function Scroll({
   children,
   style
 }) {
-  const scrollRef = React.useRef(null);
+  const scrollRef = useRef(null);
   const scrollEl = scrollRef.current;
 
-  const scrollTo = React.useCallback(
+  const scrollTo = useCallback(
     (coord) => {
       if (scrollEl) {
         if (scrollEl.scrollTo) {
@@ -47,7 +47,7 @@ export default Scroll;
 // Hooks
 
 const useScrollContext =
-  () => React.useContext(ScrollContext);
+  () => useContext(ScrollContext);
 
 export const useScrollTo = () => {
   const { scrollTo } = useScrollContext();
