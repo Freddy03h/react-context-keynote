@@ -19,8 +19,8 @@ const globalStyles = {
     gutterWidth: 16,
     columns: 12,
     maxWidth: 1440,
-    minWidth: 1024,
-    maxTabletWidth: 1280
+    maxMobileWidth: 768,
+    maxTabletWidth: 1024
   }
 };
 const { grid } = globalStyles;
@@ -28,19 +28,15 @@ const { grid } = globalStyles;
 const gutterCount = grid.columns + 1;
 const totalGuttersWidth = gutterCount * grid.gutterWidth;
 
-function clamp(num, min, max) {
-  return Math.min(max, Math.max(min, num));
-}
-
 function findColumnWidth(windowWidth) {
-  const clampedWidth = clamp(windowWidth, grid.minWidth, grid.maxWidth);
+  const clampedWidth = Math.min(windowWidth, grid.maxWidth);
   const availableWidthWithoutGutters = clampedWidth - totalGuttersWidth;
   const columnWidth = availableWidthWithoutGutters / 12;
-  return Math.floor(columnWidth);
+  return columnWidth;
 }
 
 function findLayoutType(windowWidth) {
-  if (windowWidth < grid.minWidth) {
+  if (windowWidth < grid.maxMobileWidth) {
     return "mobile";
   } else if (windowWidth < grid.maxTabletWidth) {
     return "tablet";
@@ -113,7 +109,20 @@ export const useLayoutType = () => {
 export const Root = ({ children }) => {
   return (
     <GridProvider>
-      <div>{children}</div>
+      <div
+        style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0 }}
+      >
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            margin: "0 auto",
+            maxWidth: globalStyles.grid.maxWidth
+          }}
+        >
+          {children}
+        </div>
+      </div>
     </GridProvider>
   );
 };
@@ -123,12 +132,15 @@ export const ExampleA = () => {
   return (
     <div
       style={{
+        paddingTop: 38,
+        paddingBottom: 38,
+        color: "white",
         backgroundColor:
           layoutType === "mobile"
-            ? "pink"
+            ? "#E91E63"
             : layoutType === "tablet"
-            ? "cyan"
-            : "purple"
+            ? "#2979FF"
+            : "#9a86fd"
       }}
     >
       {layoutType}
@@ -139,24 +151,35 @@ export const ExampleA = () => {
 export const GridExampleA = () => {
   return (
     <Root>
-      <ExampleA />
+      <GridTemplate display={false}>
+        <ExampleA />
+      </GridTemplate>
     </Root>
   );
 };
 
 export const ExampleB = () => {
   const layoutType = useLayoutType();
-  const width = useColumnsWidth(4);
+  const widthDesktop = useColumnsWidth(6);
+  const widthTablet = useColumnsWidth(8);
   return (
     <div
       style={{
+        paddingTop: 38,
+        paddingBottom: 38,
+        color: "white",
         backgroundColor:
           layoutType === "mobile"
-            ? "pink"
+            ? "#E91E63"
             : layoutType === "tablet"
-            ? "cyan"
-            : "purple",
-        width: layoutType === "desktop" ? width : "auto"
+            ? "#2979FF"
+            : "#9a86fd",
+        width:
+          layoutType === "desktop"
+            ? widthDesktop
+            : layoutType === "tablet"
+            ? widthTablet
+            : "auto"
       }}
     >
       {layoutType}
@@ -164,10 +187,68 @@ export const ExampleB = () => {
   );
 };
 
+export const GridTemplate = ({ display, children }) => {
+  const { columnWidth, gutterWidth } = useGridContext();
+
+  const arrayColumns = [...Array(12).keys()];
+
+  return (
+    <div
+      style={{
+        height: "100%",
+        position: "relative",
+        display: "flex",
+        alignItems: "center"
+      }}
+    >
+      {display && (
+        <div
+          style={{
+            display: "flex",
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            zIndex: 1
+          }}
+        >
+          {arrayColumns.map(i => (
+            <div
+              style={{
+                backgroundColor: "#E0E0E0",
+                width: columnWidth,
+                flexShrink: 0,
+                flexGrow: 0,
+                flexBasis: "auto",
+                marginRight: gutterWidth,
+                marginLeft: i === 0 ? gutterWidth : 0
+              }}
+            />
+          ))}
+        </div>
+      )}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 2,
+          width: "100%",
+          marginRight: gutterWidth,
+          marginLeft: gutterWidth
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
+
 export const GridExampleB = () => {
   return (
     <Root>
-      <ExampleB />
+      <GridTemplate display={true}>
+        <ExampleB />
+      </GridTemplate>
     </Root>
   );
 };
