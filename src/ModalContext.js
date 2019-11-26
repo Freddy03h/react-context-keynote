@@ -1,23 +1,21 @@
-import React, { useState, useRef, useContext, createContext } from "react";
-import ReactDOM from "react-dom";
+import React, { useState, useContext, createContext } from "react";
 import ScrollProvider from "./ScrollContext";
 
 // Context
 
 export const ModalContext = createContext({
-  container: null
+  setModalView: view => {}
 });
 
 // Provider
 
 function ModalProvider({ children }) {
-  const containerRef = useRef(null);
-  const container = containerRef.current;
+  const [modalView, setModalView] = useState(null);
 
   return (
-    <ModalContext.Provider value={{ container }}>
+    <ModalContext.Provider value={{ setModalView }}>
       {children}
-      <div ref={containerRef} />
+      <div>{modalView}</div>
     </ModalContext.Provider>
   );
 }
@@ -27,21 +25,27 @@ export default ModalProvider;
 // Component
 
 export function Modal({ children, isOpen, onRequestClose }) {
-  const { container } = useContext(ModalContext);
+  const { setModalView } = useContext(ModalContext);
 
-  const child = (
-    <div style={{ ...styles.container, ...(isOpen && styles.containerOpen) }}>
-      <div
-        style={{ ...styles.overlay, ...(isOpen && styles.overlayOpen) }}
-        onClick={onRequestClose}
-      />
-      <div style={{ ...styles.modal, ...(isOpen && styles.modalOpen) }}>
-        {children}
+  React.useEffect(() => {
+    const child = (
+      <div style={{ ...styles.container, ...(isOpen && styles.containerOpen) }}>
+        <div
+          style={{ ...styles.overlay, ...(isOpen && styles.overlayOpen) }}
+          onClick={onRequestClose}
+        />
+        <div style={{ ...styles.modal, ...(isOpen && styles.modalOpen) }}>
+          {children}
+        </div>
       </div>
-    </div>
-  );
+    );
 
-  return container ? ReactDOM.createPortal(child, container) : null;
+    setModalView(child);
+
+    return () => setModalView(null);
+  }, [setModalView, children, isOpen]);
+
+  return null;
 }
 
 const styles = {
@@ -55,7 +59,10 @@ const styles = {
     display: "flex",
 
     visibility: "hidden",
-    transition: "visibility 0ms linear 250ms"
+    transitionProperty: "visibility",
+    transitionDuration: "0ms",
+    transitionTimingfunction: "linear",
+    transitionDelay: "250ms"
   },
   containerOpen: {
     visibility: "visible",
@@ -72,7 +79,10 @@ const styles = {
     backdropFilter: "blur(6px)",
 
     opacity: 0,
-    transition: "opacity 175ms ease-in-out 75ms"
+    transitionProperty: "opacity",
+    transitionDuration: "175ms",
+    transitionTimingfunction: "ease-in-out",
+    transitionDelay: "75ms"
   },
   overlayOpen: {
     opacity: 1,
@@ -81,6 +91,10 @@ const styles = {
   modal: {
     position: "relative",
     margin: "auto",
+    backgroundColor: "white",
+    width: "60%",
+    padding: "24px 0",
+    borderRadius: 6,
 
     transition:
       "opacity 250ms ease-in-out 0ms, transform 250ms ease-in-out 0ms",
