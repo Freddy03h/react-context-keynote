@@ -281,6 +281,7 @@ export default class Presentation extends React.Component {
           <List textColor="primary" margin="0px 0px 1em">
             <ListItem><Link href="https://codesandbox.io/s/header-system-y8w9i" textColor="primary" target="_blank">Example that nest context providers to create a headers system that manages header tags (h1, h2, ...) on its own</Link></ListItem>
             <ListItem><Link href="https://twitter.com/zoontek" textColor="primary" target="_blank">For a more production ready example with Modal/Portal, ask @zoontek</Link></ListItem>
+            <ListItem><Link href="https://github.com/Freddy03h/react-context-keynote/tree/master/src" textColor="primary" target="_blank">Examples source code</Link></ListItem>
           </List>
 
         </Slide>
