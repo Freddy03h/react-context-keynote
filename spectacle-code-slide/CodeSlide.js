@@ -232,7 +232,7 @@ class CodeSlide extends React.Component {
         <pre
           ref="container"
           style={newStyle}
-          class={this.context.styles.prism.dark}
+          className={this.context.styles.prism.dark}
         >
           <code style={{ display: "inline-block", textAlign: "left" }}>
             {lines}

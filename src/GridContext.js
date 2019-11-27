@@ -127,6 +127,62 @@ export const Root = ({ children }) => {
   );
 };
 
+export const GridTemplate = ({ display, children }) => {
+  const { columnWidth, gutterWidth } = useGridContext();
+
+  const arrayColumns = [...Array(12).keys()];
+
+  return (
+    <div
+      style={{
+        height: "100%",
+        position: "relative",
+        display: "flex",
+        alignItems: "center"
+      }}
+    >
+      {display && (
+        <div
+          style={{
+            display: "flex",
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            zIndex: 1
+          }}
+        >
+          {arrayColumns.map(i => (
+            <div
+              style={{
+                backgroundColor: "#E0E0E0",
+                width: columnWidth,
+                flexShrink: 0,
+                flexGrow: 0,
+                flexBasis: "auto",
+                marginRight: gutterWidth,
+                marginLeft: i === 0 ? gutterWidth : 0
+              }}
+            />
+          ))}
+        </div>
+      )}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 2,
+          width: "100%",
+          marginRight: gutterWidth,
+          marginLeft: gutterWidth
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
+
 export const ExampleA = () => {
   const layoutType = useLayoutType();
   return (
@@ -183,62 +239,6 @@ export const ExampleB = () => {
       }}
     >
       {layoutType}
-    </div>
-  );
-};
-
-export const GridTemplate = ({ display, children }) => {
-  const { columnWidth, gutterWidth } = useGridContext();
-
-  const arrayColumns = [...Array(12).keys()];
-
-  return (
-    <div
-      style={{
-        height: "100%",
-        position: "relative",
-        display: "flex",
-        alignItems: "center"
-      }}
-    >
-      {display && (
-        <div
-          style={{
-            display: "flex",
-            position: "absolute",
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: 1
-          }}
-        >
-          {arrayColumns.map(i => (
-            <div
-              style={{
-                backgroundColor: "#E0E0E0",
-                width: columnWidth,
-                flexShrink: 0,
-                flexGrow: 0,
-                flexBasis: "auto",
-                marginRight: gutterWidth,
-                marginLeft: i === 0 ? gutterWidth : 0
-              }}
-            />
-          ))}
-        </div>
-      )}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 2,
-          width: "100%",
-          marginRight: gutterWidth,
-          marginLeft: gutterWidth
-        }}
-      >
-        {children}
-      </div>
     </div>
   );
 };
